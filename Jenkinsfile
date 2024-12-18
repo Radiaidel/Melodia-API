@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'music-api'
+        DOCKER_IMAGE = 'project-music-api'
     }
 
     stages {
