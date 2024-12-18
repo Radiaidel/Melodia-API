@@ -13,12 +13,12 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'mvn clean install -DskipTests'
+                bat  'mvn clean install -DskipTests'
             }
         }
         stage('Docker Build') {
             steps {
-                sh 'docker build -t ${DOCKER_IMAGE} .'
+                bat 'docker build -t ${DOCKER_IMAGE} .'
             }
         }
     }
