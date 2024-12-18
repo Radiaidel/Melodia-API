@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Radiaidel/Melodia-API'
+                git branch: 'main', url: 'https://github.com/Radiaidel/Melodia-API'
             }
         }
         stage('Build') {
