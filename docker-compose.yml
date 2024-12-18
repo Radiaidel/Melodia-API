@@ -1,0 +1,60 @@
+services:
+  music-api:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - MONGO_URI=mongodb://mongodb:27017/musicdb
+    depends_on:
+      - mongodb
+    networks:
+      - music-network
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    networks:
+      - music-network
+    volumes:
+      - mongo-data:/data/db
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    ports:
+      - "8082:8080"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+    networks:
+      - music-network
+    environment:
+      - JENKINS_OPTS=--prefix=/jenkins
+    restart: always
+
+  mongodb-compass:
+    image: mongo-express:latest
+    container_name: music-mongodb-compass
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_PORT=27017
+
+    ports:
+      - "27018:8081"
+    networks:
+      - music-network
+    depends_on:
+      - mongodb
+
+
+networks:
+  music-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local
+  jenkins_home:
+    driver: local
